@@ -3,4 +3,9 @@ enum direction {
   DESC = 'desc'
 }
 
-export { direction }
+type sortable<order> = {
+  orderBy?: order
+  direction?: direction
+}
+
+export { direction, sortable }

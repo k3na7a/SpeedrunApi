@@ -2,7 +2,8 @@
 
 import { category } from './categories.types'
 import { level } from './levels.types'
-import { direction } from './sorting.types'
+import { paginated } from './pagination.types'
+import { sortable } from './sorting.types'
 import { variable } from './variables.types'
 
 type names = {
@@ -87,22 +88,43 @@ type gamesParams = {
   developer?: string // developer ID; when given, restricts to that developer
   publisher?: string // publisher ID; when given, restricts to that publisher
   moderator?: string // moderator ID; when given, only games moderated by that user will be returned
-
-  max?: number
-  offset?: number
-
-  orderby?: gameOrder
-  direction?: direction
-}
+} & sortable<orderGamesBy> &
+  paginated
 
 type recordsParams = {
   top?: number // only return the top N places (this can result in more than N runs!); this is set to 3 by default
   scope?: 'full-game' | 'levels' | 'all' // when set to full-game, only full-game categories will be included; when set to levels, only individual levels are returned; default is all
   miscellaneous?: boolean // when set to a false value, miscellaneous categories will not be included
   ['skip-empty']?: boolean // when set to a true value, empty leaderboards will not show up in the result
+} & paginated
+
+type categoriesParams = {
+  miscellaneous?: boolean // when given, filters (out) misc categories
+} & sortable<orderCategoriesBy>
+
+enum orderCategoriesBy {
+  NAME = 'name', // sorts alphanumerically by the category name
+  MISCELLANEOUS = 'miscellaneous', // sorts by miscellaneous flag
+  POS = 'pos' // (default) uses the order as defined by the game moderator
 }
 
-enum gameOrder {
+type levelsParams = {} & sortable<orderLevelsBy>
+
+enum orderLevelsBy {
+  NAME = 'name', // sorts alphanumerically by the level name
+  POS = 'pos' // (default) uses the order as defined by the game moderator
+}
+
+type variablesParams = {} & sortable<orderVariablesBy>
+
+enum orderVariablesBy {
+  NAME = 'name', // sorts alphanumerically by the variable name
+  MANDATORY = 'mandatory', // sorts by mandatory flag
+  ['USER-DEFINED'] = 'user-defined', //	sorts by user-defined flag
+  POS = 'pos' // (default) uses the order as defined by the game moderator
+}
+
+enum orderGamesBy {
   NAME_INT = 'name.int', // (default) sorts alphanumerically by the international name
   NAME_JAP = 'name.jap', // sorts alphanumerically by the japanese name
   ABBREVIATION = 'abbreviation', // sorts alphanumerically by the abbreviation
@@ -125,4 +147,16 @@ enum gameEmbeds {
   VARIABLES = 'variables' // will embed all defined variables for the game.
 }
 
-export { game, gamesParams, recordsParams, gameEmbeds }
+export {
+  game,
+  gamesParams,
+  recordsParams,
+  gameEmbeds,
+  categoriesParams,
+  orderLevelsBy,
+  levelsParams,
+  variablesParams,
+  orderVariablesBy,
+  orderCategoriesBy,
+  orderGamesBy
+}

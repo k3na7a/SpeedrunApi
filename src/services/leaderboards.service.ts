@@ -6,7 +6,7 @@ import { instance } from '../config/speedrun.config.ts'
 class leaderboards {
   // GET /leaderboards/{game}/category/{category}
   // This will return a full-game leaderboard. The game and category can be either IDs or the respective abbreviations.
-  public static async getLeaderboardByCategory(
+  public static async getFullGameLeaderboard(
     gameId: string,
     categoryId: string,
     params?: leaderboardParams
@@ -16,6 +16,24 @@ class leaderboards {
         params: {
           ...params,
           embed: [leaderboardEmbeds.GAME, leaderboardEmbeds.CATEGORY, leaderboardEmbeds.VARIABLES].join(',')
+        }
+      })
+      .then((response: AxiosResponse) => response.data['data'])
+  }
+
+  // GET /leaderboards/{game}/level/{level}/{category}
+  // This will return a individual-level leaderboard. The game, category and level can be either IDs or the respective abbreviations.
+  public static async getLevelLeaderboard(
+    gameId: string,
+    levelId: string,
+    categoryId: string,
+    params?: leaderboardParams
+  ): Promise<leaderboard> {
+    return instance
+      .get<leaderboard>(`leaderboards/${gameId}/level/${levelId}/${categoryId}`, {
+        params: {
+          ...params,
+          embed: [leaderboardEmbeds.LEVEL, leaderboardEmbeds.CATEGORY, leaderboardEmbeds.VARIABLES].join(',')
         }
       })
       .then((response: AxiosResponse) => response.data['data'])

@@ -1,6 +1,14 @@
 import { AxiosResponse } from 'axios'
 import { instance } from '../config/speedrun.config.ts'
-import { game, gameEmbeds, gamesParams, recordsParams } from '../types/games.types.ts'
+import {
+  categoriesParams,
+  game,
+  gameEmbeds,
+  gamesParams,
+  levelsParams,
+  recordsParams,
+  variablesParams
+} from '../types/games.types.ts'
 import { category } from '../types/categories.types.ts'
 import { leaderboard } from '../types/leaderboards.types.ts'
 import { level } from '../types/levels.types.ts'
@@ -27,7 +35,7 @@ class games {
 
   // GET /games/{game}/categories
   // This will retrieve all categories of a given game (the id can be either the game ID or its abbreviation).
-  public static async getCategories(gameId: string, params?: { miscellaneous: boolean }): Promise<Array<category>> {
+  public static async getCategories(gameId: string, params?: categoriesParams): Promise<Array<category>> {
     return instance
       .get<Array<category>>(`games/${gameId}/categories`, { params: { ...params } })
       .then((response: AxiosResponse) => response.data['data'])
@@ -35,15 +43,17 @@ class games {
 
   // GET /games/{game}/levels
   // This will retrieve all levels of a given game (the id can be either the game ID or its abbreviation).
-  public static async getLevels(gameId: string): Promise<Array<level>> {
-    return instance.get<Array<level>>(`games/${gameId}/levels`).then((response: AxiosResponse) => response.data['data'])
+  public static async getLevels(gameId: string, params?: levelsParams): Promise<Array<level>> {
+    return instance
+      .get<Array<level>>(`games/${gameId}/levels`, { params: { ...params } })
+      .then((response: AxiosResponse) => response.data['data'])
   }
 
   // GET /games/{game}/variables
   // This will retrieve all variables of a given game (the id can be either the game ID or its abbreviation). If you need only those applicable to certain categories or levels, look there.
-  public static async getVariables(gameId: string): Promise<Array<variable>> {
+  public static async getVariables(gameId: string, params?: variablesParams): Promise<Array<variable>> {
     return instance
-      .get<Array<variable>>(`games/${gameId}/variables`)
+      .get<Array<variable>>(`games/${gameId}/variables`, { params: { ...params } })
       .then((response: AxiosResponse) => response.data['data'])
   }
 

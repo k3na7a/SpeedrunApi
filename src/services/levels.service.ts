@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { instance } from '../config/speedrun.config.ts'
-import { level, recordsParams } from '../types/levels.types.ts'
+import { categoriesParams, level, recordsParams } from '../types/levels.types.ts'
 import { category } from '../types/categories.types.ts'
 import { variable } from '../types/variables.types.ts'
 import { leaderboard } from '../types/leaderboards.types.ts'
@@ -14,7 +14,7 @@ class levels {
 
   // GET /levels/{level}/categories
   // This will retrieve the applicable categories for the given level.
-  public static async getCategories(levelId: string, params?: { miscellaneous: boolean }): Promise<Array<category>> {
+  public static async getCategories(levelId: string, params?: categoriesParams): Promise<Array<category>> {
     return instance
       .get<Array<category>>(`levels/${levelId}/categories`, { params: { ...params } })
       .then((response: AxiosResponse) => response.data['data'])

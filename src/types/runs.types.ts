@@ -1,5 +1,7 @@
 // https://github.com/speedruncomorg/api/blob/master/version1/runs.md
 
+import { sortable } from './sorting.types'
+
 type values = { [key: string]: string }
 type uri = { uri: string }
 type videos = { links: Array<uri> }
@@ -37,7 +39,7 @@ type run = {
   comment: string
   status: status
   date: string | null
-  submitted: Date
+  submitted: Date | null
   times: times
   system: system
   splits: link | null
@@ -55,6 +57,19 @@ type runParams = {
   region?: string // region ID; when given, restricts to that region
   emulated?: boolean // when 1, yes or true, only games run on emulator will be returned
   status?: 'new' | 'verified' | 'rejected' // filters by run status; new, verified and rejected are possible values for this parameter
+} & sortable<orderRunsBy>
+
+enum orderRunsBy {
+  GAME = 'game', // (default) sorts by the game the run was done in
+  CATEGORY = 'category', // sorts by the category the run was done in
+  LEVEL = 'level', // sorts by the level the run was done in
+  PLATFORM = 'platform', // sorts by the console used for the run
+  REGION = 'region', // sorts by the console region the run was done in
+  EMULATED = 'emulated', // sorts by whether or not a run is done via emulator
+  DATE = 'date', // sorts by the date the run happened on
+  SUBMITTED = 'submitted', // sorts by the date when the run was submitted to speedrun.com
+  STATUS = 'status', // sorts by verification status
+  ['VERIFY-DATE'] = 'verify-date' // sorts by the date the run was verified on
 }
 
 enum runEmbeds {
@@ -66,4 +81,4 @@ enum runEmbeds {
   PLATFORM = 'platform' // will embed the full platform resource. This can be empty if no platform was set for the run.
 }
 
-export { run, runParams, runEmbeds }
+export { run, runParams, runEmbeds, orderRunsBy }

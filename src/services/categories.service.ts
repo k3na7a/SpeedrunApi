@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios'
 
 import { instance } from '../config/speedrun.config.ts'
 
-import { category, categoryEmbeds } from '../types/categories.types.ts'
+import { category, categoryEmbeds, recordsParams, variablesParams } from '../types/categories.types.ts'
 import { leaderboard } from '../types/leaderboards.types.ts'
 import { variable } from '../types/variables.types.ts'
 
@@ -19,9 +19,9 @@ class categories {
 
   // GET /categories/{category}/variables
   // This will retrieve all variables that are applicable to the given category.
-  public static async getVariables(categoryId: string): Promise<Array<variable>> {
+  public static async getVariables(categoryId: string, params?: variablesParams): Promise<Array<variable>> {
     return instance
-      .get<Array<variable>>(`categories/${categoryId}/variables`)
+      .get<Array<variable>>(`categories/${categoryId}/variables`, { params: { ...params } })
       .then((response: AxiosResponse) => response.data['data'])
   }
 
@@ -29,7 +29,7 @@ class categories {
   // This will retrieve the records (first three places) of the given category. If it's a full-game category, the result will be a list containing one leaderboard.
   public static async getRecords(
     categoryId: string,
-    params?: { top?: number; ['skip-empty']: boolean }
+    params?: recordsParams
   ): Promise<Array<leaderboard>> {
     return instance
       .get<Array<leaderboard>>(`categories/${categoryId}/records`, { params: { ...params } })
