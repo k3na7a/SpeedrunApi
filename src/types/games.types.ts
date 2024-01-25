@@ -1,6 +1,7 @@
 // https://github.com/speedruncomorg/api/blob/master/version1/games.md
 
 import { category } from './categories.types'
+import { developer } from './developers.types'
 import { level } from './levels.types'
 import { paginated } from './pagination.types'
 import { sortable } from './sorting.types'
@@ -65,7 +66,7 @@ type game = {
   gametypes: Array<string>
   platforms: Array<string>
   genres: Array<string>
-  developers: Array<string>
+  developers: Array<string> | { data: Array<developer> }
   publishers: Array<string>
   moderators: moderators
   created: Date

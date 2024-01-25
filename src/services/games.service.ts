@@ -28,7 +28,9 @@ class games {
   public static async getGameById(gameId: string): Promise<game> {
     return instance
       .get<game>(`games/${gameId}`, {
-        params: { embed: [gameEmbeds.CATEGORIES, gameEmbeds.LEVELS, gameEmbeds.VARIABLES].join(',') }
+        params: {
+          embed: [gameEmbeds.CATEGORIES, gameEmbeds.LEVELS, gameEmbeds.VARIABLES, gameEmbeds.DEVELOPERS].join(',')
+        }
       })
       .then((response: AxiosResponse) => response.data['data'])
   }

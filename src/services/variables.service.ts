@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
-import { variable } from '../types/variables.types'
-import { instance } from '../config/speedrun.config'
+import { variable } from '../types/variables.types.ts'
+import { instance } from '../config/speedrun.config.ts'
 
 class variables {
   // GET /variables/{id}
@@ -10,4 +10,4 @@ class variables {
   }
 }
 
-export { variables }
+export default variables

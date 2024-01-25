@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
-import { instance } from '../config/speedrun.config'
-import { run, runParams } from '../types/runs.types'
+import { instance } from '../config/speedrun.config.ts'
+import { run, runParams } from '../types/runs.types.ts'
 
 class runs {
   // GET /runs
